@@ -12,8 +12,7 @@ ingress:
      kubernetes.io/tls-acme: "true"
   hosts:
     - host: seleniumgrid.grid.integ.sehlat.io
-      paths:
-        - /
+
   tls:
     - secretName: selenium-grid-tls
       hosts:
