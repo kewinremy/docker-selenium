@@ -26,7 +26,8 @@ spec:
               value: "4443"
             - name: SE_OPTS
               value: "--log-level FINE"
-          image: selenium/node-chrome:4.0.0
+          {{- $imageTag := default .Values.global.imageTagNodes .Values.chromeNode.imageTag }}
+          image: {{ printf "%s/%s:%s" .Values.global.repository .Values.chromeNode.imageName $imageTag }}
           name: chrome
           ports:
             - containerPort: 5900
@@ -39,5 +40,5 @@ spec:
         - name: dshm
           emptyDir:
             medium: Memory
-            sizeLimit: "2Gi"
+            sizeLimit: {{ default "2Gi" .Values.chromeNode.dshmVolumeSizeLimit }}
 status: {}
