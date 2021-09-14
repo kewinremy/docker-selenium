@@ -1,0 +1,8 @@
+name: selenium-grid-v4
+description: A generated Helm Chart for selenium-grid-v4 from Skippbox Kompose
+version: 4.0.0
+apiVersion: v1
+keywords:
+  - selenium-grid-v4
+sources:
+home:

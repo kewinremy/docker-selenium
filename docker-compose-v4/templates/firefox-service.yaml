@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: firefox
+  name: firefox
+spec:
+  ports:
+    - name: "6901"
+      port: 6901
+      targetPort: 5900
+  selector:
+    io.kompose.service: firefox
+status:
+  loadBalancer: {}

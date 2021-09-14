@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: edge
+  name: edge
+spec:
+  ports:
+    - name: "6902"
+      port: 6902
+      targetPort: 5900
+  selector:
+    io.kompose.service: edge
+status:
+  loadBalancer: {}

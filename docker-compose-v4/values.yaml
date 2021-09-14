@@ -1,0 +1,84 @@
+nodes:
+  imageTag: 4.0.0
+    
+
+hub: 
+  imageName: selenium/hub
+  imagePullPolicy: IfNotPresent
+  hubImageTag: 4.0.0
+
+# todo
+  livenessProbe:
+    enabled: true
+    path: /wd/hub/status
+    initialDelaySeconds: 10
+    failureThreshold: 10
+    timeoutSeconds: 10
+    periodSeconds: 10
+    successThreshold: 1
+# todo
+  readinessProbe:
+    enabled: true
+    path: /wd/hub/status
+    initialDelaySeconds: 12
+    failureThreshold: 10
+    timeoutSeconds: 10
+    periodSeconds: 10
+    successThreshold: 1
+# todo: 
+  extraEnvironmentVariables:
+    - name: SE_SESSION_REQUEST_TIMEOUT
+      value: "300"
+    - name: SE_OPTS
+      value: "--log-level FINE"
+
+
+# todo
+chromeNode:
+  enabled: true
+  imageTag: 4.0.0
+  replicas: 1
+  imagePullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "1"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+  extraEnvironmentVariables:
+    - name: SE_OPTS
+      value: "--log-level FINE"
+  dshmVolumeSizeLimit: 2Gi
+
+#todo: 
+edgeNode:
+  enabled: true  
+  imageTag: 4.0.0
+  replicas: 1
+  imagePullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "1"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+  extraEnvironmentVariables:
+  dshmVolumeSizeLimit: 2Gi
+
+firefoxNode:
+  enabled: true
+  imageTag: 4.0.0
+  replicas: 1
+  imagePullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "1"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+  extraEnvironmentVariables:
+  dshmVolumeSizeLimit: 2Gi
+

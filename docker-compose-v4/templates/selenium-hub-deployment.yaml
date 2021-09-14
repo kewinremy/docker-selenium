@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: selenium-hub
+  name: selenium-hub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: selenium-hub
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: selenium-hub
+    spec:
+      containers:
+        - name: selenium-hub
+          {{- $imageTag := default .Values.hub.imageTag }}
+          image: {{ printf "%s/%s:%s" $imageTag }}
+          ports:
+            - containerPort: 4442
+            - containerPort: 4443
+            - containerPort: 4444
+          resources: {}
+      restartPolicy: Always
+status: {}
