@@ -18,7 +18,7 @@ spec:
       containers:
         - name: selenium-hub
           {{- $imageTag := default .Values.hub.imageTag }}
-          image: {{ printf "%s/%s:%s" $imageTag }}
+          image: {{ printf "%s/%s:%s" .Values.global.repository .Values.hub.imageName $imageTag }}
           ports:
             - containerPort: 4442
             - containerPort: 4443
