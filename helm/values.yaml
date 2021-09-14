@@ -24,6 +24,10 @@ hub:
   imageName: selenium/hub
   imageTag: 4.0.0
   imagePullPolicy: IfNotPresent
+  port: 4444
+  publishPort: 4442
+  subscribePort: 4443
+
   livenessProbe:
     enabled: true
     path: /wd/hub/status
