@@ -24,7 +24,12 @@ spec:
               value: "4442"
             - name: SE_EVENT_BUS_SUBSCRIBE_PORT
               value: "4443"
-          image: selenium/node-edge:4.0.0
+            {{- range .Values.edgeNode.extraEnvironmentVariables }}
+            - name: {{ .name }}
+              value: {{ .value }}
+            {{- end }}
+          {{- $imageTag := default .Values.global.imageTagNodes .Values.edgeNode.imageTag }}
+          image: {{ printf "%s/%s:%s" .Values.global.repository .Values.edgeNode.imageName $imageTag }}
           name: edge
           ports:
             - containerPort: 5900
@@ -37,5 +42,5 @@ spec:
         - name: dshm
           emptyDir:
             medium: Memory
-            sizeLimit: "2Gi"
+            sizeLimit: {{ default "2Gi" .Values.edgeNode.dshmVolumeSizeLimit }}
 status: {}
