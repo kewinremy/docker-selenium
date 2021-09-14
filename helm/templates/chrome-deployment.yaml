@@ -5,7 +5,7 @@ metadata:
     io.kompose.service: chrome
   name: chrome
 spec:
-  replicas: 1
+  replicas: {{ default 2 .Values.chromeNode.replicas }}
   selector:
     matchLabels:
       io.kompose.service: chrome
@@ -17,7 +17,11 @@ spec:
         io.kompose.service: chrome
     spec:
       containers:
-        - env:
+        - name: chrome
+          {{- $imageTag := default .Values.global.imageTagNodes .Values.chromeNode.imageTag }}
+          image: {{ printf "%s/%s:%s" .Values.global.repository .Values.chromeNode.imageName $imageTag }}
+          imagePullPolicy: {{ .Values.chromeNode.imagePullPolicy }}
+          env:
             - name: SE_EVENT_BUS_HOST
               value: selenium-hub
             - name: SE_EVENT_BUS_PUBLISH_PORT
@@ -28,12 +32,11 @@ spec:
             - name: {{ .name }}
               value: {{ .value }}
             {{- end }}
-          {{- $imageTag := default .Values.global.imageTagNodes .Values.chromeNode.imageTag }}
-          image: {{ printf "%s/%s:%s" .Values.global.repository .Values.chromeNode.imageName $imageTag }}
-          name: chrome
           ports:
             - containerPort: 5900
-          resources: {}
+          {{- with .Values.chromeNode.resources }}
+          resources: {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - mountPath: /dev/shm
               name: dshm

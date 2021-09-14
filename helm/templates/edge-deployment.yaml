@@ -5,7 +5,7 @@ metadata:
     io.kompose.service: edge
   name: edge
 spec:
-  replicas: 1
+  replicas: {{ default 2 .Values.edgeNode.replicas }}
   selector:
     matchLabels:
       io.kompose.service: edge
@@ -17,7 +17,11 @@ spec:
         io.kompose.service: edge
     spec:
       containers:
-        - env:
+        - name: edge
+          {{- $imageTag := default .Values.global.imageTagNodes .Values.edgeNode.imageTag }}
+          image: {{ printf "%s/%s:%s" .Values.global.repository .Values.edgeNode.imageName $imageTag }}
+          imagePullPolicy: {{ .Values.edgeNode.imagePullPolicy }}
+          env:
             - name: SE_EVENT_BUS_HOST
               value: selenium-hub
             - name: SE_EVENT_BUS_PUBLISH_PORT
@@ -28,12 +32,11 @@ spec:
             - name: {{ .name }}
               value: {{ .value }}
             {{- end }}
-          {{- $imageTag := default .Values.global.imageTagNodes .Values.edgeNode.imageTag }}
-          image: {{ printf "%s/%s:%s" .Values.global.repository .Values.edgeNode.imageName $imageTag }}
-          name: edge
           ports:
             - containerPort: 5900
-          resources: {}
+          {{- with .Values.edgeNode.resources }}
+          resources: {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - mountPath: /dev/shm
               name: dshm

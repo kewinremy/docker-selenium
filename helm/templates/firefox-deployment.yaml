@@ -5,7 +5,7 @@ metadata:
     io.kompose.service: firefox
   name: firefox
 spec:
-  replicas: 1
+  replicas: {{ default 2 .Values.firefoxNode.replicas }}
   selector:
     matchLabels:
       io.kompose.service: firefox
@@ -17,7 +17,11 @@ spec:
         io.kompose.service: firefox
     spec:
       containers:
-        - env:
+        - name: firefox
+          {{- $imageTag := default .Values.global.imageTagNodes .Values.firefoxNode.imageTag }}
+          image: {{ printf "%s/%s:%s" .Values.global.repository .Values.firefoxNode.imageName $imageTag }}
+          imagePullPolicy: {{ .Values.firefoxNode.imagePullPolicy }}
+          env:
             - name: SE_EVENT_BUS_HOST
               value: selenium-hub
             - name: SE_EVENT_BUS_PUBLISH_PORT
@@ -28,12 +32,11 @@ spec:
             - name: {{ .name }}
               value: {{ .value }}
             {{- end }}
-          {{- $imageTag := default .Values.global.imageTagNodes .Values.firefoxNode.imageTag }}
-          image: {{ printf "%s/%s:%s" .Values.global.repository .Values.firefoxNode.imageName $imageTag }}
-          name: firefox
           ports:
             - containerPort: 5900
-          resources: {}
+          {{- with .Values.firefoxNode.resources }}
+          resources: {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - mountPath: /dev/shm
               name: dshm

@@ -52,7 +52,7 @@ chromeNode:
   imageName: selenium/node-chrome
   enabled: true
   imageTag: 4.0.0
-  replicas: 1
+  replicas: 2
   imagePullPolicy: IfNotPresent
   resources:
     requests:
@@ -71,7 +71,7 @@ edgeNode:
   enabled: true
   imageName: selenium/node-edge
   imageTag: 4.0.0
-  replicas: 1
+  replicas: 2
   imagePullPolicy: IfNotPresent
   resources:
     requests:
@@ -81,6 +81,8 @@ edgeNode:
       memory: "1Gi"
       cpu: "1"
   extraEnvironmentVariables:
+    - name: SE_OPTS
+      value: "--log-level FINE"
   dshmVolumeSizeLimit: 2Gi
 
 # configuration for node firefox
@@ -88,7 +90,7 @@ firefoxNode:
   enabled: true
   imageName: selenium/node-firefox
   imageTag: 4.0.0
-  replicas: 1
+  replicas: 2
   imagePullPolicy: IfNotPresent
   resources:
     requests:
@@ -98,5 +100,7 @@ firefoxNode:
       memory: "1Gi"
       cpu: "1"
   extraEnvironmentVariables:
+    - name: SE_OPTS
+      value: "--log-level FINE"
   dshmVolumeSizeLimit: 2Gi
 
