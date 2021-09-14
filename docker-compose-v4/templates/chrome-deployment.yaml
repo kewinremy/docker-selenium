@@ -24,8 +24,10 @@ spec:
               value: "4442"
             - name: SE_EVENT_BUS_SUBSCRIBE_PORT
               value: "4443"
-            - name: SE_OPTS
-              value: "--log-level FINE"
+            {{- range .Values.chromeNode.extraEnvironmentVariables }}
+            - name: {{ .name }}
+              value: {{ .value }}
+            {{- end }}
           {{- $imageTag := default .Values.global.imageTagNodes .Values.chromeNode.imageTag }}
           image: {{ printf "%s/%s:%s" .Values.global.repository .Values.chromeNode.imageName $imageTag }}
           name: chrome
