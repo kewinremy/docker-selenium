@@ -1,7 +1,7 @@
 # general
 global: 
   repository: integ.docker.pkg.sehlat.io
-  imageTagNodes: 4.0.0
+  imageTag: 4.0.0
 
 imagePullSecrets:
   - name: integ-registry
@@ -22,7 +22,6 @@ ingress:
 # hub
 hub: 
   imageName: selenium/hub
-  imageTag: 4.0.0
   imagePullPolicy: IfNotPresent
   port: 4444
   publishPort: 4442
@@ -53,9 +52,8 @@ hub:
 
 # node chrome
 chromeNode:
-  imageName: selenium/node-chrome
   enabled: true
-  imageTag: 4.0.0
+  imageName: selenium/node-chrome
   replicas: 2
   imagePullPolicy: IfNotPresent
   resources:
@@ -74,7 +72,6 @@ chromeNode:
 edgeNode:
   enabled: true
   imageName: selenium/node-edge
-  imageTag: 4.0.0
   replicas: 2
   imagePullPolicy: IfNotPresent
   resources:
@@ -93,7 +90,6 @@ edgeNode:
 firefoxNode:
   enabled: true
   imageName: selenium/node-firefox
-  imageTag: 4.0.0
   replicas: 2
   imagePullPolicy: IfNotPresent
   resources:

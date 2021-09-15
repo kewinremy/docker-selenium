@@ -18,20 +18,19 @@ spec:
     spec:
       containers:
         - name: chrome
-          {{- $imageTag := default .Values.global.imageTagNodes .Values.chromeNode.imageTag }}
+          {{- $imageTag := default .Values.global.imageTag .Values.chromeNode.imageTag }}
           image: {{ printf "%s/%s:%s" .Values.global.repository .Values.chromeNode.imageName $imageTag }}
           imagePullPolicy: {{ .Values.chromeNode.imagePullPolicy }}
-          env:
+          # environment variables
+          {{- with .Values.hub.extraEnvironmentVariables }}
+          env: {{- tpl (toYaml .) $ | nindent 12 }}
+          {{- end }}
             - name: SE_EVENT_BUS_HOST
               value: selenium-hub
             - name: SE_EVENT_BUS_PUBLISH_PORT
               value: "4442"
             - name: SE_EVENT_BUS_SUBSCRIBE_PORT
               value: "4443"
-            {{- range .Values.chromeNode.extraEnvironmentVariables }}
-            - name: {{ .name }}
-              value: {{ .value }}
-            {{- end }}
           ports:
             - containerPort: 5900
           {{- with .Values.chromeNode.resources }}
